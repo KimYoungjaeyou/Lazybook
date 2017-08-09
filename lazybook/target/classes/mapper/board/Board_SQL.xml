@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="lazybook">
-	
+
 	<select id="selectBoardList" parameterType="hashmap" resultType="hashmap">
 		<![CDATA[
         SELECT BRDNO, BRDTITLE, BRDWRITER, DATE_FORMAT(BRDDATE,'%Y-%m-%d') BRDDATE
@@ -10,6 +10,46 @@
          ORDER BY BRDNO DESC 
 		]]>
 	</select>
-	
-	
+
+	<insert id="insertBoard" parameterType="hashmap">
+    <![CDATA[
+        INSERT INTO TBL_BOARD
+        (
+            BRDNO,
+            BRDTITLE,
+            BRDWRITER,
+            BRDMEMO,
+            BRDDATE
+        )
+        VALUES
+        ( 
+        	(
+            	(SELECT MAXNO FROM (
+            	SELECT MAX(BRDNO) AS MAXNO FROM TBL_BOARD
+            	) AS SUB_TABLE) +1
+            ),
+            #{TITLE},
+            'Admin',
+            #{CONTENTS},
+            SYSDATE()
+        )
+    ]]>
+	</insert>
+
+
+	<select id="selectBoardDetail" parameterType="hashmap"	resultType="hashmap">
+    <![CDATA[
+        SELECT 
+        	BRDNO,
+            BRDTITLE,
+            BRDWRITER,
+            BRDMEMO,
+            BRDDATE
+        FROM
+            TBL_BOARD
+        WHERE
+            BRDNO = #{BRDNO}       
+    ]]>
+	</select>
+
 </mapper>

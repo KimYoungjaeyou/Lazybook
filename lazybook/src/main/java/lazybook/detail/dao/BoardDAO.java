@@ -15,4 +15,14 @@ public class BoardDAO extends AbstractDAO{
 		return (List<Map<String, Object>>)selectList("lazybook.selectBoardList", map);
 	}
 
+	public void insertBoard(Map<String, Object> map) {
+		insert("lazybook.insertBoard", map);
+	}
+
+
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> selectBoardDetail(Map<String, Object> map) throws Exception{
+	    return (Map<String, Object>) selectOne("lazybook.selectBoardDetail", map);
+	}
+
 }
